@@ -134,7 +134,7 @@
 				
 				var hue = Math.floor(Math.random() * 360).toString()
 				var color = new THREE.Color("hsl(" + hue + ", 100%, 50%)");
-				this.light = new THREE.PointLight(color, 0.078, 0, 1000)
+				this.light = new THREE.PointLight(color, 1, 0, 1000)
 				let innergap = (hatchsize - (1 * wallthickness))
 				let lightposx = (Math.random() * innergap) - (innergap / 2)
 				let lightposy = (Math.random() * innergap) - (innergap / 2)
@@ -148,9 +148,10 @@
 				this.allobjects.push(this.leftladder)
 				this.allobjects.push(this.rightladder)
 				this.allobjects.push(this.horizladder)
-				this.allobjects.push(this.light)
+				
 				this.translatez(zpos)
 				this.randomise()
+				this.light.position.z += zpos
 			}
 			
 			translatez(zamount){
@@ -171,7 +172,7 @@
 					{
 						var hue = Math.floor(Math.random() * 360).toString()
 						var color = new THREE.Color("hsl(" + hue + ", 100%, 50%)");
-						anobject.color = color
+						this.light.color = color
 					}
 				})
 			}
@@ -194,13 +195,14 @@
 			}
 			
 			addsection(){
-				let zpositionofnew = (this.sections.length * (this.sectionsize - this.overlap ) * -1) + this.overlap 
+				let zpositionofnew = (this.sections.length * (this.sectionsize - this.overlap ) * -1) + this.overlap  
 				this.sections.push(new Section(zpositionofnew, this))
 			}
 			
 			generatesections(){
 				for (var i = 0; i < this.numsections; i++) {
 					this.addsection()
+					this.sections[i].light.intensity /= (this.numsections - i)
 				}
 			}
 			
@@ -252,8 +254,7 @@
 		const canvas = document.querySelector('#c');
 		const renderer = new THREE.WebGLRenderer({canvas});
 		// renderer.setPixelRatio( window.devicePixelRatio );
-
-		renderer.antialias = false
+		renderer.setPixelRatio( 1 );
 	
 		// change fontsize
 		let reldist = 0
