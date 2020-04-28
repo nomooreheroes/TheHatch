@@ -168,13 +168,11 @@
 						anobject.scale.set(xscale, yscale, 1)
 						let rotate = (Math.random() /10) - 0.05
 						anobject.rotation.z = rotate
-					} else
-					{
-						var hue = Math.floor(Math.random() * 360).toString()
-						var color = new THREE.Color("hsl(" + hue + ", 100%, 50%)");
-						this.light.color = color
-					}
+					} 		
 				})
+				var hue = Math.floor(Math.random() * 360).toString()
+				var color = new THREE.Color("hsl(" + hue + ", 100%, 50%)");
+				this.light.color = color
 			}
 		}
 		
@@ -301,9 +299,9 @@
 		
 		var footer = document.getElementById('footer')
 		let numiterations = BigInt(0)
-		ycyclic = new Cyclic(10 * 4, 0.045)
-		xcyclic = new Cyclic(31 * 4, 0.02)
-		angcyclic = new Cyclic(27 * 4, 0.03)
+		ycyclic = new Cyclic(10 * 4, 0.037)
+		xcyclic = new Cyclic(31 * 4, 0.015)
+		angcyclic = new Cyclic(27 * 4, 0.022)
 		advancecamera = function() {
 			numiterations += BigInt(1)
 			camera.position.y = ycyclic.getval(numiterations)
@@ -316,7 +314,7 @@
 			renderer.render(scene, camera);
 		};
 			
-		setInterval(advancecamera, 25)
+		setInterval(advancecamera, 17)
 		
 	</script>
 </html>
