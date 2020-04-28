@@ -147,7 +147,7 @@
 				
 				var hue = Math.floor(Math.random() * 360).toString()
 				var color = new THREE.Color("hsl(" + hue + ", 100%, 50%)");
-				this.light = new THREE.PointLight(color, 0.078, 0, 1000)
+				this.light = new THREE.PointLight(color, 0.178, 0, 1000)
 				let innergap = (hatchsize - (1 * wallthickness))
 				let lightposx = (Math.random() * innergap) - (innergap / 2)
 				let lightposy = (Math.random() * innergap) - (innergap / 2)
