@@ -8,7 +8,11 @@
 			body {
 				margin: 0;
 				overflow: hidden;
-				display: flex;
+				display: -webkit-box;   /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+				display: -webkit-box;   /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+				display: -ms-flexbox;  /* TWEENER - IE 10 */
+				display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+				display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
 				flex-direction: column;
 				justify-content: center;
 				background: black;
@@ -17,7 +21,10 @@
 				font-family: 'Anton', sans-serif;
 			}
 			.horizcontainer {
-				display: flex;
+				display: -webkit-box;   /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+				display: -ms-flexbox;  /* TWEENER - IE 10 */
+				display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+				display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
 				flex-direction: row;
 				justify-content: center;
 			}
@@ -30,7 +37,10 @@
 				width:100%;
 				height:100%;
 				color: white;
-				display: flex;
+				display: -webkit-box;   /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+				display: -ms-flexbox;  /* TWEENER - IE 10 */
+				display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+				display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
 				flex-direction: column;
 				justify-content: center;
 			}
@@ -39,7 +49,10 @@
 				width: 100%;
 				height: 100%;
 				color: white;
-				display: flex;
+				display: -webkit-box;   /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+				display: -ms-flexbox;  /* TWEENER - IE 10 */
+				display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+				display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
 				flex-direction: column;
 				justify-content: center;
 			}
