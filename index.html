@@ -299,9 +299,9 @@
 		
 		var footer = document.getElementById('footer')
 		let numiterations = BigInt(0)
-		ycyclic = new Cyclic(10 * 4, 0.037)
-		xcyclic = new Cyclic(31 * 4, 0.015)
-		angcyclic = new Cyclic(27 * 4, 0.022)
+		ycyclic = new Cyclic(10 * 7, 0.037)
+		xcyclic = new Cyclic(31 * 6, 0.015)
+		angcyclic = new Cyclic(27 * 7, 0.022)
 		advancecamera = function() {
 			numiterations += BigInt(1)
 			camera.position.y = ycyclic.getval(numiterations)
