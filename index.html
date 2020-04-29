@@ -242,7 +242,7 @@
 			
 			getval(numiterations) {
 				// numiterations will be big Int16Array
-				let yposition = numiterations % BigInt(this.period)
+				let yposition = numiterations % this.period
 				let yangle = Math.sin((Number(yposition) / this.period) * Math.PI * 2)
 				return  yangle * this.range
 			}
@@ -311,12 +311,12 @@
 		renderer.render(scene, camera);
 		
 		var footer = document.getElementById('footer')
-		let numiterations = BigInt(0)
+		let numiterations = 0
 		ycyclic = new Cyclic(10 * 7, 0.037)
 		xcyclic = new Cyclic(31 * 6, 0.015)
 		angcyclic = new Cyclic(27 * 7, 0.022)
 		advancecamera = function() {
-			numiterations += BigInt(1)
+			numiterations += 1
 			camera.position.y = ycyclic.getval(numiterations)
 			camera.position.x = xcyclic.getval(numiterations)
 			camera.rotation.z = angcyclic.getval(numiterations)
