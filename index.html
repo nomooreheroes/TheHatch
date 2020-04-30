@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title> The Hatch Radio Station </title>
-		<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+			<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 		<style>
 			body {
 				margin: 0;
@@ -17,7 +17,7 @@
 				justify-content: center;
 				background: black;
 				color: white;
-				font-size: 1cm;
+				font-size: 2cm;
 				font-family: 'Anton', sans-serif;
 			}
 			.horizcontainer {
@@ -42,10 +42,23 @@
 				display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
 				display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
 				flex-direction: column;
-				justify-content: center;
+				justify-content: flex-start;
+				padding-left: 4vh;
 			}
 			#Schedule {
-				font-size: 0.5cm;
+				font-size: 1cm;
+			}
+			.buffer {
+				height: 10vh;
+			}
+			#player {
+				-ms-zoom: 1.78;
+				-moz-transform: scale(1.78);
+				-moz-transform-origin: 0 0;
+				-o-transform: scale(1.78);
+				-o-transform-origin: 0 0;
+				-webkit-transform: scale(1.78);
+				-webkit-transform-origin: 0 0;
 			}
 		</style>
 		<script src="https://threejs.org/build/three.js"> </script>
@@ -56,6 +69,7 @@
 				</canvas>
 		</div>
 		<div class="overlay">
+			<div class='buffer'></div>
 			<div>
 				THE HATCH
 			</div>
@@ -287,7 +301,7 @@
 			camera.rotation.z = angcyclic.getval(numiterations)
 			camera.aspect = canvas.clientWidth / canvas.clientHeight;
 			camera.updateProjectionMatrix()
-			let moveamount = 0.00035 * delta
+			let moveamount = 0.00099 * delta
 			myhatch.translatez(moveamount)
 			myhatch.rotate()
 			renderer.render(scene, camera);
