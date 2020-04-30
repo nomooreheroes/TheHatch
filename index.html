@@ -34,7 +34,7 @@
 			}
 			.overlay {
 				position: absolute;
-				width:100%;
+				width: 96vh;
 				height:100%;
 				color: white;
 				display: -webkit-box;   /* OLD - iOS 6-, Safari 3.1-6, BB7 */
@@ -319,6 +319,9 @@
 			}
 			var delta = timestamp - last
 			last = timestamp
+			if (delta > 200) {
+				delta = 200
+			}
 			advancecamera(delta, total)
 			window.requestAnimationFrame(step);
 		}
