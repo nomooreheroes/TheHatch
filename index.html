@@ -71,6 +71,7 @@
 	
 		class Section {
 			constructor(zpos, sectionlist){
+
 				let hatchsize = sectionlist.hatchsize
 				let wallthickness = sectionlist.wallthickness
 				let sectionsize = sectionlist.sectionsize
@@ -81,51 +82,59 @@
 				let ladderhorizwidth = hatchsize - (2 * (ladderoffsetfromwall + wallthickness))
 				this.allobjects = []
 
-				this.right = new THREE.BoxGeometry(wallthickness, hatchsize, sectionsize);
+				// below code could be reduced with a helper function
+				this.right = new THREE.BoxBufferGeometry(wallthickness, hatchsize, sectionsize);
 				this.rightwall = new THREE.Mesh(this.right, material);
 				scene.add(this.rightwall)
 				this.rightwall.position.x = hatchsize /2
 
-				this.left = new THREE.BoxGeometry(wallthickness, hatchsize, sectionsize);
+				this.left = new THREE.BoxBufferGeometry(wallthickness, hatchsize, sectionsize);
 				this.leftwall = new THREE.Mesh(this.left, material);
 				scene.add(this.leftwall);
 				this.leftwall.position.x = (hatchsize / 2) * -1
 
-				this.ttop = new THREE.BoxGeometry(hatchsize, wallthickness, sectionsize);
+				this.ttop = new THREE.BoxBufferGeometry(hatchsize, wallthickness, sectionsize);
 				this.ttopwall = new THREE.Mesh(this.ttop, material);
 				scene.add(this.ttopwall);
 				this.ttopwall.position.y = hatchsize / 2
 
-				this.bottom = new THREE.BoxGeometry(hatchsize, wallthickness, sectionsize);
+				this.bottom = new THREE.BoxBufferGeometry(hatchsize, wallthickness, sectionsize);
 				this.bottomwall = new THREE.Mesh(this.bottom, material);
 				scene.add(this.bottomwall);
 				this.bottomwall.position.y = (hatchsize / 2) * -1
 
-				this.leftladdergeom = new THREE.BoxGeometry(ladderwidth, ladderheight, sectionsize);
+				this.leftladdergeom = new THREE.BoxBufferGeometry(ladderwidth, ladderheight, sectionsize);
 				this.leftladder = new THREE.Mesh(this.leftladdergeom, material);
 				scene.add(this.leftladder);
 				this.leftladder.position.y = ((hatchsize / 2) * -1) + wallthickness
 				this.leftladder.position.x = ((hatchsize / 2) * -1) + wallthickness + ladderoffsetfromwall
 
-				this.rightladdergeom = new THREE.BoxGeometry(ladderwidth, ladderheight, sectionsize);
+				this.rightladdergeom = new THREE.BoxBufferGeometry(ladderwidth, ladderheight, sectionsize);
 				this.rightladder = new THREE.Mesh(this.rightladdergeom, material);
 				scene.add(this.rightladder);
 				this.rightladder.position.y = ((hatchsize / 2) * -1) + wallthickness
 				this.rightladder.position.x = ((hatchsize / 2)) - wallthickness - ladderoffsetfromwall
 
-				this.horizladdergeom = new THREE.BoxGeometry(ladderhorizwidth, ladderheight, ladderwidth);
+				this.horizladdergeom = new THREE.BoxBufferGeometry(ladderhorizwidth, ladderheight, ladderwidth);
 				this.horizladder = new THREE.Mesh(this.horizladdergeom, material);
 				scene.add(this.horizladder);
 				this.horizladder.position.y = ((hatchsize / 2) * -1) + wallthickness
 				
-				var hue = Math.floor(Math.random() * 360).toString()
-				var color = new THREE.Color("hsl(" + hue + ", 100%, 50%)");
-				this.light = new THREE.PointLight(color, 1, 0, 1000)
-				let innergap = (hatchsize - (1 * wallthickness))
-				let lightposx = (Math.random() * innergap) - (innergap / 2)
-				let lightposy = (Math.random() * innergap) - (innergap / 2)
-				this.light.position.set(lightposx, lightposy, 0)
-				scene.add(this.light);
+				let modnum = sectionlist.sections.length % 6
+				if (modnum == 0) {
+					var hue = Math.floor(Math.random() * 360).toString()
+					var color = new THREE.Color("hsl(" + hue + ", 100%, 50%)");
+					this.light = new THREE.PointLight(color, 1 * 6, 0, 1000)
+					let innergap = (hatchsize - (1 * wallthickness))
+					let lightposx = (Math.random() * innergap) - (innergap / 2)
+					let lightposy = (Math.random() * innergap) - (innergap / 2)
+					this.light.position.set(lightposx, lightposy, 0)
+					scene.add(this.light);
+					this.light.position.z += zpos
+				} else {
+					this.light = undefined
+				}
+
 				
 				this.allobjects.push(this.rightwall)
 				this.allobjects.push(this.leftwall)
@@ -137,7 +146,7 @@
 				
 				this.translatez(zpos)
 				this.randomise()
-				this.light.position.z += zpos
+				
 			}
 			
 			translatez(zamount){
@@ -156,9 +165,11 @@
 						anobject.rotation.z = rotate
 					} 		
 				})
-				var hue = Math.floor(Math.random() * 360).toString()
-				var color = new THREE.Color("hsl(" + hue + ", 100%, 50%)");
-				this.light.color = color
+				if (this.light !== undefined) {
+					var hue = Math.floor(Math.random() * 360).toString()
+					var color = new THREE.Color("hsl(" + hue + ", 100%, 50%)");
+					this.light.color = color
+				}
 			}
 		}
 		
@@ -186,7 +197,10 @@
 			generatesections(){
 				for (var i = 0; i < this.numsections; i++) {
 					this.addsection()
-					this.sections[i].light.intensity /= (this.numsections - i)
+					// should move this into addsection really
+					if(this.sections[i].light !== undefined) {
+						this.sections[i].light.intensity /= (this.numsections - i)
+					}
 				}
 			}
 			
@@ -258,27 +272,45 @@
 		
 		const scene = new THREE.Scene();
 		
-		myhatch = new Hatch(35)
+		myhatch = new Hatch(36)
 		
 		renderer.render(scene, camera);
 		
-		let numiterations = 0
+		let iterationtimeamount = 17
 		ycyclic = new Cyclic(10 * 7, 0.037)
 		xcyclic = new Cyclic(31 * 6, 0.015)
 		angcyclic = new Cyclic(27 * 7, 0.022)
-		advancecamera = function() {
-			numiterations += 1
+		advancecamera = function(delta, total) {
+			let numiterations = Math.floor(total / iterationtimeamount)
 			camera.position.y = ycyclic.getval(numiterations)
 			camera.position.x = xcyclic.getval(numiterations)
 			camera.rotation.z = angcyclic.getval(numiterations)
 			camera.aspect = canvas.clientWidth / canvas.clientHeight;
 			camera.updateProjectionMatrix()
-			myhatch.translatez(0.006)
+			let moveamount = 0.00035 * delta
+			myhatch.translatez(moveamount)
 			myhatch.rotate()
 			renderer.render(scene, camera);
 		};
+		
+		var start = null;
+		var last = null
+		function step(timestamp)
+		{
+			if (!start)
+				start = timestamp;
+			var total = timestamp - start;
+			if(!last) {
+				last = timestamp
+			}
+			var delta = timestamp - last
+			last = timestamp
+			advancecamera(delta, total)
+			window.requestAnimationFrame(step);
+		}
+
+		window.requestAnimationFrame(step);
 			
-		setInterval(advancecamera, 17)
 		
 	</script>
 </html>
